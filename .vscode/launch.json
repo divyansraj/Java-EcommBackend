@@ -1,0 +1,14 @@
+{
+  "configurations": [
+    {
+      "type": "java",
+      "name": "Spring Boot-EcommerceBackendApplication<EcommerceBackend>",
+      "request": "launch",
+      "cwd": "${workspaceFolder}",
+      "mainClass": "com.luffy.EcommerceBackend.EcommerceBackendApplication",
+      "projectName": "EcommerceBackend",
+      "args": "",
+      "envFile": "${workspaceFolder}/.env"
+    }
+  ]
+}
