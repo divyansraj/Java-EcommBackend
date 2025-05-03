@@ -2,6 +2,7 @@ package com.luffy.EcommerceBackend.controller;
 
 import com.luffy.EcommerceBackend.dto.LoginResponseDTO;
 import com.luffy.EcommerceBackend.model.User;
+import com.luffy.EcommerceBackend.security.jwt.JwtService;
 import com.luffy.EcommerceBackend.security.service.UserPrincipal;
 import com.luffy.EcommerceBackend.service.UserService;
 import jakarta.validation.Valid;
@@ -29,6 +30,8 @@ public class UserController {
     private AuthenticationManager authenticationManager;
     @Autowired
     private UserService services;
+    @Autowired
+    private JwtService jwtService;
     @GetMapping("/getuser")
     public ResponseEntity<?> getuser(@RequestBody String email){
         try{
@@ -63,16 +66,16 @@ public class UserController {
             );
             SecurityContextHolder.getContext().setAuthentication(authentication);
             UserPrincipal principal = (UserPrincipal) authentication.getPrincipal();
+            String jwtToken = jwtService.generateToken(principal);
 
-            System.out.println("-----------------");
-            System.out.println(principal);
-            System.out.println("-----------------");
 
-            LoginResponseDTO response=new LoginResponseDTO(
-                    principal.getName(),
-                    principal.getUsername(),
-                    principal.getRole()
-            );
+
+            LoginResponseDTO response=new LoginResponseDTO();
+            response.setName(principal.getName());
+            response.setEmail(principal.getUsername());
+            response.setRole(principal.getRole());
+            response.setJwt_token(jwtToken);
+
             return ResponseEntity.status(HttpStatus.OK).body(response);
         }
         catch(Exception e){
